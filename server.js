@@ -4,16 +4,13 @@ const express = require('express');
 const cors = require('cors'); 
 require('dotenv').config(); 
 
-
 // ============== App ===================================
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-
 // ============== Routes ================================
-
 
   
   app.get('/location', handleGetLocation);
