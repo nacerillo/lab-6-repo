@@ -36,8 +36,8 @@ const PORT = process.env.PORT || 3000;
   }
 
 
-  function Location(jsonData, locationName){
-    this.search_query = locationName;
+  function Location(jsonData, cityName){
+    this.search_query = cityName;
     this.formatted_query = jsonData[0].display_name;
     this.latitude = jsonData[0].lat;
     this.longitude = jsonData[0].lon;
