@@ -36,3 +36,35 @@ lab-06-repository
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
 
 -->
+
+## Features Completeion:
+
+1.  Number and name of feature: Project Set Up
+
+Estimate of time needed to complete: 10 minutues
+
+Start time: 2:15
+
+Finish time: 2:25
+
+Actual time needed to complete: 20 minutes
+
+2.  Number and name of feature: Location
+
+Estimate of time needed to complete: 30 minutues
+
+Start time: 2:30
+
+Finish time: 2:55
+
+Actual time needed to complete: 25 minutes
+
+3.  Number and name of feature: Weather
+
+Estimate of time needed to complete: 30 minutues
+
+Start time: 3:03
+
+Finish time: 3:35
+
+Actual time needed to complete: 32 minutes
