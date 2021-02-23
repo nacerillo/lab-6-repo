@@ -25,12 +25,16 @@ const PORT = process.env.PORT || 3000;
   app.get('/weather', handleGetWeather);
   function handleGetWeather(req, res){
 
-    console.log(req.query);
+    //console.log(req.query);
     const weatherData = require('./data/weather.json'); 
-    const output = []; 
-    for(var i = 0; i < weatherData.data.length; i++){
+    let output = []; 
+    
+     output = weatherData.data.map(makeForecasts);
+
+    /*for(var i = 0; i < weatherData.data.length; i++){
         output.push(new Weather(weatherData.data[i]));
-    }
+    }*/
+   // console.log(output, "Hello!");
     res.send(output);
 
   }
@@ -44,8 +48,15 @@ const PORT = process.env.PORT || 3000;
   }
 
   function Weather(jsonData){
+    console.log(jsonData.valid_date);
+    console.log(jsonData.weather.description);
     this.time = jsonData.valid_date;
     this.forecast = jsonData.weather.description;
+  }
+
+  function makeForecasts(value, index, array){
+   // console.log(array[index].valid_date);
+    return new Weather(array[index]);
   }
 
   app.listen(PORT, () => console.log(`app is up on port http://localhost:${PORT}`)); 
