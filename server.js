@@ -32,17 +32,25 @@ function handleGetLocation(req, res){
  
 function handleGetWeather(req, res){
 
-  //console.log(req.query);
+  console.log(req.query);
   const weatherData = require('./data/weather.json'); 
+  const url = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${req.query.latitude}&lon=${req.query.longitude}&key=${process.env.WEATHER_API_KEY}`;
   let output = []; 
+  superAgent.get(url).then(stuffComesBack =>{
+    console.log(stuffComesBack.body, "body");
+    // const locationData = require('./data/location.json'); 
+    const output = weatherData.data.map(makeForecasts);
+    res.json(output);
+  });
+
     
-  output = weatherData.data.map(makeForecasts);
+ 
 
   /*for(var i = 0; i < weatherData.data.length; i++){
         output.push(new Weather(weatherData.data[i]));
     }*/
   // console.log(output, "Hello!");
-  res.send(output);
+  //res.send(output);
 
 }
 
