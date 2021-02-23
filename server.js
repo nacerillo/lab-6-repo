@@ -29,7 +29,7 @@ const PORT = process.env.PORT || 3000;
     const weatherData = require('./data/weather.json'); 
     const output = []; 
     for(var i = 0; i < weatherData.data.length; i++){
-        output.push(new Weather(weatherData,i));
+        output.push(new Weather(weatherData.data[i]));
     }
     res.send(output);
 
@@ -43,9 +43,9 @@ const PORT = process.env.PORT || 3000;
     this.longitude = jsonData[0].lon;
   }
 
-  function Weather(jsonData, index){
-    this.time = jsonData.data[index].valid_date;
-    this.forecast = jsonData.data[index].weather.description;
+  function Weather(jsonData){
+    this.time = jsonData.valid_date;
+    this.forecast = jsonData.weather.description;
   }
 
   app.listen(PORT, () => console.log(`app is up on port http://localhost:${PORT}`)); 
