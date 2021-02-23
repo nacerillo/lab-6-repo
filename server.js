@@ -3,7 +3,7 @@
 const express = require('express');
 const cors = require('cors'); 
 require('dotenv').config(); 
-
+const superAgent = require('superagent');
 // ============== App ===================================
 
 const app = express();
@@ -13,31 +13,38 @@ const PORT = process.env.PORT || 3000;
 // ============== Routes ================================
 
   
-  app.get('/location', handleGetLocation);
-  app.get('/weather',handleGetWeather);
-  function handleGetLocation(req, res){
-    console.log(req.query); 
-    const locationData = require('./data/location.json'); 
-    const output = new Location(locationData, req.query.city);
-    res.send(output);
-  }
+app.get('/location', handleGetLocation);
+app.get('/weather',handleGetWeather);
+  //app.get('/parks', handleGetPark);
+function handleGetLocation(req, res){
+  console.log(req.query, "req"); 
+  const url = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${req.query.city}&format=json`;
+  superAgent.get(url).then(stuffComesBack =>{
+    console.log(stuffComesBack.body, "body");
+    // const locationData = require('./data/location.json'); 
+    const output = new Location(stuffComesBack.body, req.query.city);
+    res.json(output);
+  });
+    //const locationData = require('./data/location.json'); 
+    //const output = new Location(locationData, req.query.city);
+   // res.send(output);
+}
  
-  app.get('/weather', handleGetWeather);
-  function handleGetWeather(req, res){
+function handleGetWeather(req, res){
 
-    //console.log(req.query);
-    const weatherData = require('./data/weather.json'); 
-    let output = []; 
+  //console.log(req.query);
+  const weatherData = require('./data/weather.json'); 
+  let output = []; 
     
-     output = weatherData.data.map(makeForecasts);
+  output = weatherData.data.map(makeForecasts);
 
-    /*for(var i = 0; i < weatherData.data.length; i++){
+  /*for(var i = 0; i < weatherData.data.length; i++){
         output.push(new Weather(weatherData.data[i]));
     }*/
-   // console.log(output, "Hello!");
-    res.send(output);
+  // console.log(output, "Hello!");
+  res.send(output);
 
-  }
+}
 
 
   function Location(jsonData, cityName){
