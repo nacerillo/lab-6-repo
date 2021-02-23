@@ -17,8 +17,8 @@ const PORT = process.env.PORT || 3000;
   app.get('/weather',handleGetWeather);
   function handleGetLocation(req, res){
     console.log(req.query); 
-    const dataFromTheFile = require('./data/location.json'); 
-    const output = new Location(dataFromTheFile, req.query.city);
+    const locationData = require('./data/location.json'); 
+    const output = new Location(locationData, req.query.city);
     res.send(output);
   }
  
@@ -26,26 +26,26 @@ const PORT = process.env.PORT || 3000;
   function handleGetWeather(req, res){
 
     console.log(req.query);
-    const dataFromTheFile = require('./data/weather.json'); 
+    const weatherData = require('./data/weather.json'); 
     const output = []; 
-    for(var i = 0; i < dataFromTheFile.data.length; i++){
-        output.push(new Weather(dataFromTheFile,i));
+    for(var i = 0; i < weatherData.data.length; i++){
+        output.push(new Weather(weatherData,i));
     }
     res.send(output);
 
   }
 
 
-  function Location(dataFromTheFile, locationName){
+  function Location(jsonData, locationName){
     this.search_query = locationName;
-    this.formatted_query = dataFromTheFile[0].display_name;
-    this.latitude = dataFromTheFile[0].lat;
-    this.longitude = dataFromTheFile[0].lon;
+    this.formatted_query = jsonData[0].display_name;
+    this.latitude = jsonData[0].lat;
+    this.longitude = jsonData[0].lon;
   }
 
-  function Weather(dataFromTheFile, index){
-    this.time = dataFromTheFile.data[index].valid_date;
-    this.forecast = dataFromTheFile.data[index].weather.description;
+  function Weather(jsonData, index){
+    this.time = jsonData.data[index].valid_date;
+    this.forecast = jsonData.data[index].weather.description;
   }
 
   app.listen(PORT, () => console.log(`app is up on port http://localhost:${PORT}`)); 
