@@ -5,7 +5,7 @@
 
 ## Overview
 
-<!-- Building this assingment as an exercise in using APIs to retrieve and use data from online sources. -->
+- Building this assingment as an exercise in using APIs to retrieve and use data from online sources.
 
 ## Getting Started
 
@@ -21,6 +21,9 @@ lab-06-repository
 ├── package-lock.json
 ├── package.json
 └── server.js
+
+- clone down this repo using the following line `git clone https://github.com/nacerillo/lab-6-repo.git`
+- run appilcation from console using `nodemon`
 
 ## Architecture
 
