@@ -5,7 +5,7 @@
 
 ## Overview
 
-<!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
+<!-- Building this assingment as an exercise in using APIs to retrieve and use data from online sources. -->
 
 ## Getting Started
 
@@ -68,3 +68,43 @@ Start time: 3:03
 Finish time: 3:35
 
 Actual time needed to complete: 32 minutes
+
+4.  Number and name of feature: **Data formatting: As a user, I want the application to provide properly formatted data so that I can view similar data for any location I choose**
+
+Estimate of time needed to complete: 30 minutues
+
+Start time: 2:20 pm
+
+Finish time: 2:50pm
+
+Actual time needed to complete: 30 minutes
+
+5.  Number and name of feature: **Weather: As a user, I want to request current weather information at any location, so that I can learn more about the typical weather patterns in the area of interest.**
+
+Estimate of time needed to complete: 30 minutues
+
+Start time: 3:00 pm
+
+Finish time: 3:40pm
+
+Actual time needed to complete: 40 minutes
+
+6.  Number and name of feature: **Locations: As a user, I want to enter the name of a location so that I do not need to look up the latitude and longitude every time I learn about a new location.**
+
+Estimate of time needed to complete: 30 minutues
+
+Start time: 3:50 pm
+
+Finish time: 4:15pm
+
+Actual time needed to complete: 25 minutes
+
+7.  Number and name of feature: **Parks: As a user, I want to request information about parks and campgrounds in the area so that I can see details about what parks are nearby.**
+
+Estimate of time needed to complete: 30 minutues
+
+Start time: 4:20 pm
+
+Finish time: 5:00pm
+
+Actual time needed to complete: 40 minutes
