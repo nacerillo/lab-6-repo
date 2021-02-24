@@ -12,7 +12,7 @@ app.use(cors());
 const PORT = process.env.PORT || 3000;
 
 // ============== Routes ================================
-
+//IMPORTANT, can decale a port from our console if we want 
   
 app.get('/location', handleGetLocation);
 app.get('/weather',handleGetWeather);
@@ -76,13 +76,13 @@ function handleGetWeather(req, res){
 
 function Parks(JsonData){
  // console.log(JsonData);
- console.log(JsonData.fullName, "FULLNAME");
- console.log(JsonData.addresses, "ADDRESS");
-console.log(JsonData.entranceFees.fee, "FEE");
+ //console.log(JsonData.fullName, "FULLNAME");
+ //console.log(JsonData.addresses, "ADDRESS");
+//console.log(JsonData.entranceFees.fee, "FEE");
  //console.log(sonData.fullName);
   this.name = JsonData.fullName;
-  this.address = JsonData.addresses;
-  this.fee = JsonData.entranceFees[0].fee;
+  this.address = `${JsonData.addresses[0].line1}, ${JsonData.addresses[0].city}, ${JsonData.addresses[0].stateCode} , ${JsonData.addresses[0].postalCode}`;
+  this.fee = JsonData.entranceFees[0].cost;
   this.description = JsonData.description;
   this.url = JsonData.url;
 }
