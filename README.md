@@ -111,3 +111,23 @@ Start time: 4:20 pm
 Finish time: 5:00pm
 
 Actual time needed to complete: 40 minutes
+
+8. **Database: As a user, I want the application to perform quickly, so that I can search for locations frequently and reliably.**
+
+Estimate of time needed to complete: 30 minutues
+
+Start time: 3:15 pm
+
+Finish time: 4:00pm
+
+Actual time needed to complete: 45 minutes
+
+9. **Server: As a user, I want the application to perform quickly so that I can search for locations frequently and reliably.**
+
+Estimate of time needed to complete: 1 hour
+
+Start time: 4:10 pm
+
+Finish time: 5:30pm
+
+Actual time needed to complete: 1 hour and 20 minutes
