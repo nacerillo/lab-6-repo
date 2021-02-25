@@ -30,7 +30,8 @@ function handleGetParks(req, res) {
 
     res.json(output);
   }).catch(error => {
-    response.send(error);
+    console.log(error);
+    res.status(500).send("Looks like there's a problem with getting the Parks.");
   });
 }
 //app.get('/parks', handleGetPark);
@@ -53,8 +54,11 @@ function handleGetWeather(req, res) {
   superAgent.get(url).then(stuffComesBack => {
     //console.log(stuffComesBack.body, "body");
     // const locationData = require('./data/location.json'); 
-    const output = weatherData.data.map(makeForecasts);
+    const output = stuffComesBack.data.map(makeForecasts);
     res.json(output);
+  }).catch(error => {
+    console.log(error);
+    response.status(500).send("Looks like there's a problem with getting the weather.");
   });
 }
 //search == req.query.search_query
@@ -73,16 +77,14 @@ function checkForExisting(req, res) {
     console.log({ returnedData });
 
     if (returnedData.rowCount === 0) {
-      //console.log("False");
-
       const url = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${req.query.city}&format=json`;
       superAgent.get(url).then(stuffComesBack => {
         const output = new Location(stuffComesBack.body, req.query.city);
-        //console.log({ output });
         const addData = 'INSERT INTO city_explorer (search_query, formatted_query, latitude, longitude) VALUES($1, $2, $3, $4)';
         const addArray = [output.search_query, output.formatted_query, output.latitude, output.longitude];
         client.query(addData, addArray).catch(error => {
           console.log(error);
+          res.status(500).send("Looks like there's a problem with getting the data.");
         });
         res.json(output);
       });
@@ -159,4 +161,3 @@ client.connect().then(() => {
   app.listen(PORT, () => console.log(`app is up on port http://localhost:${PORT}`));
 });
 //app.listen(PORT, () => console.log(`app is up on port http://localhost:${PORT}`));
-  //p
