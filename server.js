@@ -31,7 +31,7 @@ function handleGetParks(req, res) {
     res.json(output);
   }).catch(error => {
     console.log(error);
-    response.status(500).send("Looks like there's a problem with getting the Parks.");
+    res.status(500).send("Looks like there's a problem with getting the Parks.");
   });
 }
 //app.get('/parks', handleGetPark);
@@ -54,7 +54,7 @@ function handleGetWeather(req, res) {
   superAgent.get(url).then(stuffComesBack => {
     //console.log(stuffComesBack.body, "body");
     // const locationData = require('./data/location.json'); 
-    const output = weatherData.data.map(makeForecasts);
+    const output = stuffComesBack.data.map(makeForecasts);
     res.json(output);
   }).catch(error => {
     console.log(error);
@@ -84,7 +84,7 @@ function checkForExisting(req, res) {
         const addArray = [output.search_query, output.formatted_query, output.latitude, output.longitude];
         client.query(addData, addArray).catch(error => {
           console.log(error);
-          response.status(500).send("Looks like there's a problem with getting locations.");
+          res.status(500).send("Looks like there's a problem with getting the data.");
         });
         res.json(output);
       });
@@ -161,4 +161,3 @@ client.connect().then(() => {
   app.listen(PORT, () => console.log(`app is up on port http://localhost:${PORT}`));
 });
 //app.listen(PORT, () => console.log(`app is up on port http://localhost:${PORT}`));
-  //p
