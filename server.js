@@ -22,8 +22,7 @@ app.get('/weather', handleGetWeather);
 app.get('/parks', handleGetParks);
 
 function handleGetParks(req, res) {
-  console.log(req.query.search_query, "THIS IS A THING");
-  // https://developer.nps.gov/api/v1/parks?q=seattle&api_key=Zc7kHbLzEqJhfs57CwLXWt4qoW2sjdF8pw1GgfJY
+
   const url = `https://developer.nps.gov/api/v1/parks?q=${req.query.search_query}&api_key=${process.env.PARKS_API_KEY}`;
   superAgent.get(url).then(stuffComesBack => {
     const output = stuffComesBack.body.data.map(getParks);
@@ -37,8 +36,6 @@ function handleGetParks(req, res) {
 }
 
 
-
-//app.get('/parks', handleGetPark);
 function handleGetLocation(req, res) {
   checkForExisting(req, res);
 }
@@ -47,8 +44,7 @@ function handleGetWeather(req, res) {
   const url = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${req.query.latitude}&lon=${req.query.longitude}&key=${process.env.WEATHER_API_KEY}`;
   //let output = []; 
   superAgent.get(url).then(stuffComesBack => {
-    //console.log(stuffComesBack.body[0].moonrise_ts, "MY DATA");
-    // const locationData = require('./data/location.json'); 
+
     const output = stuffComesBack.body.data.map(makeForecasts);
     res.json(output);
   }).catch(error => {
@@ -59,26 +55,22 @@ function handleGetWeather(req, res) {
 }
 
 
-
 //search == req.query.search_query
 function checkForExisting(req, res) {
   const checkData = 'SELECT * FROM city_explorer where search_query = $1';
   const checkArray = [req.query.city];
   //to add it to database
-  const query = {
-    name: 'fetch',
-    text: checkData,
-    values: checkArray
-  };
-  client.query(query).then(returnedData => {
-    // console.log({ returnedData });
 
+  //returnedData => checkifInfoisInDataBase(returnedData,res,req)
+  client.query(checkData, checkArray).then(returnedData => {
+    // console.log({ returnedData });
     if (returnedData.rowCount === 0) {
       const url = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${req.query.city}&format=json`;
       superAgent.get(url).then(stuffComesBack => {
         const output = new Location(stuffComesBack.body, req.query.city);
         const addData = 'INSERT INTO city_explorer (search_query, formatted_query, latitude, longitude) VALUES($1, $2, $3, $4)';
         const addArray = [output.search_query, output.formatted_query, output.latitude, output.longitude];
+
         client.query(addData, addArray).catch(error => {
           console.log(error);
           res.status(500).send("Looks like there's a problem with getting the data.");
@@ -92,6 +84,43 @@ function checkForExisting(req, res) {
   });
   //console.log({ returnedData });
 }
+
+/*function checkLocations(req, res) {
+  const checkData = 'SELECT * FROM city_explorer where search_query = $1';
+  const checkArray = [req.query.city];
+  console.log(req.query.city);
+  //to add it to database
+  const query = {
+    name: 'fetch',
+    text: checkData,
+    values: checkArray
+  };
+  //returnedData => checkifInfoisInDataBase(returnedData,res,req)
+  client.query(query).then(returnedData => CallAPI(returnedData, res, req));
+  //console.log({ returnedData });
+}
+
+function checkifInfoisInDataBase(returnedData, res, req) {
+  console.log
+  if (returnedData.rowCount === 0) {
+    const url = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${req.query.city}&format=json`;
+    superAgent.get(url).then(stuffComesBack => {
+      const output = new Location(stuffComesBack.body, req.query.city);
+      const addData = 'INSERT INTO city_explorer (search_query, formatted_query, latitude, longitude) VALUES($1, $2, $3, $4)';
+      const addArray = [output.search_query, output.formatted_query, output.latitude, output.longitude];
+
+      client.query(addData, addArray).catch(error => {
+        console.log(error);
+        res.status(500).send("Looks like there's a problem with getting the data.");
+      });
+      res.json(output);
+    });
+  }
+  else {
+    res.json(returnedData.rows[0]);
+  }
+}
+}*/
 
 
 function Parks(JsonData) {
