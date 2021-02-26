@@ -41,7 +41,7 @@ function handleGetLocation(req, res) {
 }
 
 function handleGetWeather(req, res) {
-  const url = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${req.query.latitude}&lon=${req.query.longitude}&key=${process.env.WEATHER_API_KEY}`;
+  const url = `https://api.weatherbit.io/v2.0/forecast/daily?days=5&lat=${req.query.latitude}&lon=${req.query.longitude}&key=${process.env.WEATHER_API_KEY}`;
   //let output = []; 
   superAgent.get(url).then(stuffComesBack => {
 
