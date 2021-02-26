@@ -25,7 +25,7 @@ app.get('/yelp', handleGetYelp);
 
 function handleGetYelp(req, res) {
 
-  const url = `https://api.yelp.com/v3/businesses/search?term=restaurant&limit=5&latitude=${req.query.latitude}&longitude=${req.query.longitude}`;
+  const url = `https://api.yelp.com/v3/businesses/search?term=restaurant&limit=5&latitude=${req.query.latitude}&longitude=${req.query.longitude}&offset=${(req.query.page - 1) * 5}`;
   superAgent.get(url).set('Authorization', `Bearer ${process.env.YELP_API_KEY}`).then(stuffComesBack => {
     console.log(stuffComesBack.body.businesses);
     const output = stuffComesBack.body.businesses.map(getYelp);
@@ -39,7 +39,7 @@ function handleGetMovies(req, res) {
   const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIES_API_KEY}&query=${req.query.search_query}`;
   superAgent.get(url).then(stuffComesBack => {
     // console.log(stuffComesBack.body.results);
-    const output = stuffComesBack.body.results.map(getMovies);
+    const output = stuffComesBack.body.results.map((item, value, array) => new Movies(array[value]));
     res.json(output);
   }).catch(error => {
     // console.log(error);
