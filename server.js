@@ -5,7 +5,7 @@ const cors = require('cors');
 const pg = require('pg');
 require('dotenv').config();
 const superAgent = require('superagent');
-const { response } = require('express');
+const { response, json } = require('express');
 const client = new pg.Client(process.env.DATABASE_URL);
 client.on('error', error => console.log(error));
 // ============== App ===================================
@@ -20,7 +20,20 @@ const PORT = process.env.PORT;
 app.get('/location', handleGetLocation);
 app.get('/weather', handleGetWeather);
 app.get('/parks', handleGetParks);
+app.get('/movies', handleGetMovies);
 
+
+function handleGetMovies(req, res) {
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIES_API_KEY}&query=${req.query.search_query}`;
+  superAgent.get(url).then(stuffComesBack => {
+    console.log(stuffComesBack.body.results);
+    const output = stuffComesBack.body.results.map(getMovies);
+    res.json(output);
+  }).catch(error => {
+    console.log(error);
+    res.status(500).send("an error has occured");
+  });
+}
 function handleGetParks(req, res) {
 
   const url = `https://developer.nps.gov/api/v1/parks?q=${req.query.search_query}&api_key=${process.env.PARKS_API_KEY}`;
@@ -144,13 +157,26 @@ function Weather(jsonData) {
 }
 
 function makeForecasts(value, index, array) {
-  console.log(array[index], "WEATHER INDEX DATA");
+  //console.log(array[index], "WEATHER INDEX DATA");
   return new Weather(array[index]);
 }
 
 function getParks(value, index, array) {
   //console.log(array[index], "MORE1");
   return new Parks(array[index]);
+}
+function getMovies(value, index, array) {
+  return new Movies(array[index]);
+}
+
+function Movies(jsonData) {
+  this.title = jsonData.title;
+  this.overview = jsonData.overview;
+  this.avarage_votes = jsonData.vote_average;
+  this.total_votes = jsonData.vote_count;
+  this.image_url = jsonData.poster_path;
+  this.popularity = jsonData.popularity;
+  this.released_on = jsonData.release_date;
 }
 
 client.connect().then(() => {
