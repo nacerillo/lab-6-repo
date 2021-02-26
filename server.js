@@ -21,16 +21,28 @@ app.get('/location', handleGetLocation);
 app.get('/weather', handleGetWeather);
 app.get('/parks', handleGetParks);
 app.get('/movies', handleGetMovies);
+app.get('/yelp', handleGetYelp);
 
+function handleGetYelp(req, res) {
 
-function handleGetMovies(req, res) {
-  const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIES_API_KEY}&query=${req.query.search_query}`;
-  superAgent.get(url).then(stuffComesBack => {
-    console.log(stuffComesBack.body.results);
-    const output = stuffComesBack.body.results.map(getMovies);
+  const url = `https://api.yelp.com/v3/businesses/search?term=restaurant&limit=5&latitude=${req.query.latitude}&longitude=${req.query.longitude}`;
+  superAgent.get(url).set('Authorization', `Bearer ${process.env.YELP_API_KEY}`).then(stuffComesBack => {
+    console.log(stuffComesBack.body.businesses);
+    const output = stuffComesBack.body.businesses.map(getYelp);
     res.json(output);
   }).catch(error => {
     console.log(error);
+    res.status(500).send("an error has occured");
+  });
+}
+function handleGetMovies(req, res) {
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIES_API_KEY}&query=${req.query.search_query}`;
+  superAgent.get(url).then(stuffComesBack => {
+    // console.log(stuffComesBack.body.results);
+    const output = stuffComesBack.body.results.map(getMovies);
+    res.json(output);
+  }).catch(error => {
+    // console.log(error);
     res.status(500).send("an error has occured");
   });
 }
@@ -161,6 +173,9 @@ function makeForecasts(value, index, array) {
   return new Weather(array[index]);
 }
 
+function getYelp(value, index, array) {
+  return new Yelp(array[index]);
+}
 function getParks(value, index, array) {
   //console.log(array[index], "MORE1");
   return new Parks(array[index]);
@@ -174,9 +189,17 @@ function Movies(jsonData) {
   this.overview = jsonData.overview;
   this.avarage_votes = jsonData.vote_average;
   this.total_votes = jsonData.vote_count;
-  this.image_url = jsonData.poster_path;
+  this.image_url = `https://www.themoviedb.org/t/p/w600_and_h900_bestv2${jsonData.poster_path}` || 'sorry no image';
   this.popularity = jsonData.popularity;
   this.released_on = jsonData.release_date;
+}
+function Yelp(jsonData) {
+  this.name = jsonData.name;
+  this.image_url = jsonData.image_url;
+  this.price = jsonData.price;
+  this.rating = jsonData.rating;
+  this.url = jsonData.url;
+
 }
 
 client.connect().then(() => {
